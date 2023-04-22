@@ -1,0 +1,178 @@
+[
+	{
+		"title": "PAQUETE X 169 GRS.",
+		"description": "GALL. CRIOLLITAS MAS X 169 GRS.",
+		"price": 156,
+		"thumbnail": [],
+		"code": "000137",
+		"stock": 15,
+		"status": true,
+		"category": "GALLETITAS",
+		"id": 1
+	},
+	{
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. SONRISAS X 108 GRS.",
+		"price": 175,
+		"thumbnail": [],
+		"code": "000147",
+		"stock": 371,
+		"status": true,
+		"category": "GALLETITAS",
+		"id": 2
+	},
+	{
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. RUMBA X 108 GRS.",
+		"price": 192,
+		"thumbnail": [],
+		"code": "000149",
+		"stock": 25,
+		"status": true,
+		"category": "GALLETITAS",
+		"id": 3
+	},
+	{
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. CHOCOLINAS X 150 GRS.",
+		"price": 245,
+		"thumbnail": [],
+		"code": "000152",
+		"stock": 95,
+		"status": true,
+		"category": "GALLETITAS",
+		"id": 4
+	},
+	{
+		"title": "SURTIDO X 399 GRS.",
+		"description": "GALL. BAGLEY SURTIDO X 399 GRS.",
+		"price": 444,
+		"thumbnail": [],
+		"code": "000160",
+		"stock": 111,
+		"status": true,
+		"category": "GALLETITAS",
+		"id": 5
+	},
+	{
+		"title": "BOLSA CREMINO X 940 GRS.",
+		"description": "CARAM. ARCOR CREMINO SURT. X 940 GR",
+		"price": 1540,
+		"thumbnail": [],
+		"code": "000633",
+		"stock": 11,
+		"status": true,
+		"category": "CARAMELOS",
+		"id": 6
+	},
+	{
+		"title": "BOLSA FRUTAL X 810 GRS.",
+		"description": "CARAM. ARCOR FRUTAL RELL. X 810",
+		"price": 1248,
+		"thumbnail": [],
+		"code": "000807",
+		"stock": 39,
+		"status": true,
+		"category": "CARAMELOS",
+		"id": 7
+	},
+	{
+		"title": "BOLSA MENTA CRISTAL X 810 GRS.",
+		"description": "CARAM. ARCOR MENTA CRISTAL X 810",
+		"price": 1537,
+		"thumbnail": [],
+		"code": "000965",
+		"stock": 11,
+		"status": true,
+		"category": "CARAMELOS",
+		"id": 8
+	},
+	{
+		"title": "BOLSA CHOCOMANI X 520 GRS.",
+		"description": "CARAM. ARCOR CHOCOMANI X 520 GRS.",
+		"price": 1500,
+		"thumbnail": [],
+		"code": "000973",
+		"stock": 14,
+		"status": true,
+		"category": "CARAMELOS",
+		"id": 9
+	},
+	{
+		"title": "BOLSA MASTICABLES X 800 GRS.",
+		"description": "CARAM. MISKY MAST. X 800 GRS.",
+		"price": 725,
+		"thumbnail": [],
+		"code": "000230",
+		"stock": 175,
+		"status": true,
+		"category": "CARAMELOS",
+		"id": 10
+	},
+	{
+		"title": "ALFAJORES DE FRUTA",
+		"description": "ALFAJOR GUAYMALLEN FRUTA 40 GRS",
+		"price": 125,
+		"thumbnail": [],
+		"code": "000173",
+		"stock": 10,
+		"status": true,
+		"category": "ALFAJORES",
+		"id": 11
+	},
+	{
+		"title": "ALFAJORES DE DULCE DE LECHE",
+		"description": "ALFAJOR GUAYMALLEN DE LECHE 40 GRS X CAJA",
+		"thumbnail": [],
+		"code": "000188",
+		"price": 1010,
+		"stock": 12,
+		"category": "ALFAJORES",
+		"status": true,
+		"id": 12
+	},
+	{
+		"title": "ALFAJORES DE DULCE DE LECHE",
+		"description": "ALFAJOR GUAYMALLEN DE LECHE 40 GRS",
+		"thumbnail": [],
+		"code": "000189",
+		"price": 101.2,
+		"stock": 8,
+		"category": "ALFAJORES",
+		"status": true,
+		"id": 13
+	},
+	{
+		"title": "ALFAJORES DE CHOCOLATE",
+		"description": "ALFAJOR GUAYMALLEN DE CHOCOLATE 40 GRS",
+		"thumbnail": [],
+		"code": "000989",
+		"price": 101.2,
+		"stock": 15,
+		"category": "ALFAJORES",
+		"status": true,
+		"id": 14
+	},
+	{
+		"title": "ANILLOS DE CHOCOLATE",
+		"description": "ANILLOS BAGLEY",
+		"thumbnail": [],
+		"code": "001999",
+		"price": 315,
+		"stock": 5,
+		"category": "Galletitas",
+		"id": 15,
+		"status": true
+	},
+	{
+		"title": "ANILLOS DE CHOCOLATE",
+		"description": "ANILLOS BAGLEY x caja",
+		"thumbnail": [],
+		"code": "001995",
+		"price": 315,
+		"stock": 5,
+		"category": "Galletitas",
+		"id": 16,
+		"status": true
+	}
+]
