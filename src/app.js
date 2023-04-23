@@ -22,13 +22,10 @@ app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
 app.use('/', viewsRouter);
-// app.use('/realtimeproducts', viewsRouter)
 
 app.use((err, req, res, next) => {
     res.status(500).send("Error no contralado");
 });
-
-//app.listen(8080, () => console.log("Listening on 8080"));
 
 const server = app.listen(8080, () => console.log('Server running'));
 
@@ -37,5 +34,5 @@ const io = new Server(server);
 app.set('socketio', io);
 
 io.on('connection', () => {
-    console.log('Conectado');
+    console.log('Cliente Conectado');
 });

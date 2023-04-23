@@ -9,7 +9,7 @@ const productManager = new ProductManager(
 );
 
 router.get('/', async (req, res) => {
-    res.render('index', { products: await productManager.getProducts() });
+    res.render('home', { products: await productManager.getProducts() });
 });
 
 router.get('/realtimeproducts', async (req, res) => { 

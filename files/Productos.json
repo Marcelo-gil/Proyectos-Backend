@@ -90,7 +90,7 @@
 	{
 		"title": "BOLSA CHOCOMANI X 520 GRS.",
 		"description": "CARAM. ARCOR CHOCOMANI X 520 GRS.",
-		"price": 1500,
+		"price": 1600,
 		"thumbnail": [],
 		"code": "000973",
 		"stock": 14,
@@ -108,17 +108,6 @@
 		"status": true,
 		"category": "CARAMELOS",
 		"id": 10
-	},
-	{
-		"title": "ALFAJORES DE FRUTA",
-		"description": "ALFAJOR GUAYMALLEN FRUTA 40 GRS",
-		"price": 125,
-		"thumbnail": [],
-		"code": "000173",
-		"stock": 10,
-		"status": true,
-		"category": "ALFAJORES",
-		"id": 11
 	},
 	{
 		"title": "ALFAJORES DE DULCE DE LECHE",
@@ -154,25 +143,14 @@
 		"id": 14
 	},
 	{
-		"title": "ANILLOS DE CHOCOLATE",
-		"description": "ANILLOS BAGLEY",
+		"title": "ANILLOS DE FRUTILLA",
+		"description": "ANILLOS FRUTILLA BAGLEY x caja",
 		"thumbnail": [],
-		"code": "001999",
+		"code": "001989",
 		"price": 315,
 		"stock": 5,
 		"category": "Galletitas",
-		"id": 15,
-		"status": true
-	},
-	{
-		"title": "ANILLOS DE CHOCOLATE",
-		"description": "ANILLOS BAGLEY x caja",
-		"thumbnail": [],
-		"code": "001995",
-		"price": 315,
-		"stock": 5,
-		"category": "Galletitas",
-		"id": 16,
+		"id": 17,
 		"status": true
 	}
 ]
