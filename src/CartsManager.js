@@ -19,7 +19,6 @@ export default class CartManager {
         }
     };
 
-   
     /**
      * Busca un Cart por Id
      * @param {*} idCart Id de un Carrito
@@ -62,8 +61,7 @@ export default class CartManager {
             throw error;
         }
     };
-   
-   
+
     /**
      * Actualiza un Carrito
      *

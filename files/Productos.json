@@ -101,10 +101,10 @@
 	{
 		"title": "BOLSA MASTICABLES X 800 GRS.",
 		"description": "CARAM. MISKY MAST. X 800 GRS.",
-		"price": 725,
+		"price": 750,
 		"thumbnail": [],
 		"code": "000230",
-		"stock": 175,
+		"stock": 17,
 		"status": true,
 		"category": "CARAMELOS",
 		"id": 10
@@ -141,16 +141,5 @@
 		"category": "ALFAJORES",
 		"status": true,
 		"id": 14
-	},
-	{
-		"title": "ANILLOS DE FRUTILLA",
-		"description": "ANILLOS FRUTILLA BAGLEY x caja",
-		"thumbnail": [],
-		"code": "001989",
-		"price": 315,
-		"stock": 5,
-		"category": "Galletitas",
-		"id": 17,
-		"status": true
 	}
 ]

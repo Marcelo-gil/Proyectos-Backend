@@ -40,9 +40,9 @@ router.post("/", async (req, res) => {
     try {
         const product = await productManager.addProducts(productNew);
         if (product) {
-            const io = req.app.get('socketio');
+            const io = req.app.get("socketio");
             io.emit("showProducts", await productManager.getProducts());
-    
+
             res.send({
                 status: "success",
                 message: "Producto Creado Correctamente",
@@ -63,7 +63,7 @@ router.put("/:pid", async (req, res) => {
     try {
         const product = await productManager.updateProduct(pid, productNew);
 
-        const io = req.app.get('socketio');
+        const io = req.app.get("socketio");
         io.emit("showProducts", await productManager.getProducts());
 
         res.send({
@@ -84,7 +84,7 @@ router.delete("/:pid", async (req, res) => {
     try {
         const product = await productManager.deleteProduct(pid);
 
-        const io = req.app.get('socketio');
+        const io = req.app.get("socketio");
         io.emit("showProducts", await productManager.getProducts());
 
         res.send({

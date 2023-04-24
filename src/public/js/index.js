@@ -1,15 +1,13 @@
+const socket = io();
 
-const socket = io()
+const form = document.getElementById("form");
 
-const form = document.getElementById('form')
+const container = document.getElementById("container");
 
-const container = document.getElementById('container')
+socket.on("showProducts", (data) => {
+    container.innerHTML = ``;
 
-
-socket.on('showProducts', data => {
-    container.innerHTML = ``
-
-    data.forEach(prod => {
+    data.forEach((prod) => {
         container.innerHTML += `
             <tr>
                 <td>${prod.id}</td>
@@ -21,6 +19,6 @@ socket.on('showProducts', data => {
                 <td>${prod.status}</td>
                 <td>${prod.category}</td>
             </tr>
-        `
-    })
-})
+        `;
+    });
+});
