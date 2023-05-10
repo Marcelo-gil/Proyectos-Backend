@@ -6,12 +6,13 @@ import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import viewsRouter from "./routes/views.router.js";
 import __dirname from "./utils.js";
+import mongoose from 'mongoose';
+//import ProductManager from "../dao/fileSystem/ProductManager.js";
 
-import ProductManager from "./ProductManager.js";
-
-const productManager = new ProductManager(
+/* const productManager = new ProductManager(
     __dirname + "/../files/Productos.json"
 );
+ */
 
 const app = express();
 app.use(express.json());
@@ -28,10 +29,22 @@ app.set("view engine", "handlebars");
 
 app.use("/", viewsRouter);
 
-app.use((err, req, res, next) => {
+/* app.use((err, req, res, next) => {
     res.status(500).send("Error no contralado");
-});
+}); */
 
+
+app.use('/api/productos', productsRouter);
+app.use('/api/carrito', cartsRouter);
+
+try {
+    await mongoose.connect('mongodb+srv://alexpinaida39760:xHCGeiHfxtywJWXe@cluster39760ap.abysesb.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    console.log('DB CONNECTED')
+} catch (error) {
+    console.log(error);
+}
+
+//app.listen(8080);
 const server = app.listen(8080, () => console.log("Server running"));
 
 const io = new Server(server);
