@@ -1,6 +1,6 @@
 import express from "express";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
+import productsRouter from "./routes/fileSystem/products.router.js";
+import cartsRouter from "./routes/fileSystem/carts.router.js";
 
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
@@ -38,7 +38,8 @@ app.use('/api/productos', productsRouter);
 app.use('/api/carrito', cartsRouter);
 
 try {
-    await mongoose.connect('mongodb+srv://alexpinaida39760:xHCGeiHfxtywJWXe@cluster39760ap.abysesb.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    //await mongoose.connect('mongodb+srv://alexpinaida39760:xHCGeiHfxtywJWXe@cluster39760ap.abysesb.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    await mongoose.connect('mongodb+srv://marceloalgil:RRrQo5zW2vhLoHOU@cluster39760ap.e5cmjnv.mongodb.net/ecommerce?retryWrites=true&w=majority');
     console.log('DB CONNECTED')
 } catch (error) {
     console.log(error);
