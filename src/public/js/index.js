@@ -10,7 +10,7 @@ socket.on("showProducts", (data) => {
     data.forEach((prod) => {
         container.innerHTML += `
             <tr>
-                <td>${prod.id}</td>
+                <td>${prod._id}</td>
                 <td>${prod.title}</td> 
                 <td>${prod.description}</td>
                 <td>${prod.price}</td>

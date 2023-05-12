@@ -1,25 +1,27 @@
 import express from "express";
-import productsRouter from "./routes/fileRoutes/products.router.js";
-import cartsRouter from "./routes/fileRoutes/carts.router.js";
+import productsRouter from "./routes/dbRoutes/products.router.js";
+//import cartsRouter from "./routes/dbRoutes/carts.router.js";
 
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import viewsRouter from "./routes/views.router.js";
 import __dirname from "./utils.js";
 import mongoose from 'mongoose';
-//import ProductManager from "../dao/fileSystem/ProductManager.js";
+import ProductManager from "./dao/dbManager/productManager.js"
 
 /* const productManager = new ProductManager(
     __dirname + "/../files/Productos.json"
 );
  */
 
+const productManager = new ProductManager()
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
+//app.use("/api/carts", cartsRouter);
 
 app.use(express.static(`${__dirname}/public`));
 
@@ -35,17 +37,16 @@ app.use("/", viewsRouter);
 
 
 app.use('/api/productos', productsRouter);
-app.use('/api/carrito', cartsRouter);
+//app.use('/api/carrito', cartsRouter);
 
 try {
-    //await mongoose.connect('mongodb+srv://alexpinaida39760:xHCGeiHfxtywJWXe@cluster39760ap.abysesb.mongodb.net/ecommerce?retryWrites=true&w=majority');
     await mongoose.connect('mongodb+srv://marceloalgil:RRrQo5zW2vhLoHOU@cluster39760ap.e5cmjnv.mongodb.net/ecommerce?retryWrites=true&w=majority');
     console.log('DB CONNECTED')
 } catch (error) {
     console.log(error);
 }
 
-//app.listen(8080);
+
 const server = app.listen(8080, () => console.log("Server running"));
 
 const io = new Server(server);

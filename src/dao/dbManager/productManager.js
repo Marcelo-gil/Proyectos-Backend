@@ -69,7 +69,7 @@ export default class ProductManager {
          * @returns Producto
          */
     getProductById = async (idProduct) => {
-        const product = await productModel.find({ _id: idProduct }).lean();
+        const product = await productModel.findOne({ _id: idProduct }).lean();
         return product;
     };
 
@@ -102,7 +102,7 @@ export default class ProductManager {
      * @param {*} idProduct Id del producto
      */
     deleteProduct = async (idProduct) => {
-        const result = await productModel.deleteOne({ _id: idProduct});
+        const result = await productModel.deleteOne({ _id: idProduct });
         return result;
     }
 }

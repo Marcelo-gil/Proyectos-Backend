@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ProductManager from "../../dao/dbManagers/productManager.js";
+import ProductManager from "../../dao/dbManager/productManager.js";
 
 const router = Router();
 const productsManager = new ProductManager();
@@ -13,26 +13,73 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    const { first_name, last_name, dni, email, birth_date, gender } = req.body;
-
-    if (!first_name || !last_name || !email) {
-        return res.status(400).send({ status: 'error', error: 'Incomplete values' });
-    }
-
+router.get("/:pid", async (req, res) => {
     try {
-        const result = await productsManager.save({
-            first_name,
-            last_name,
-            dni,
-            email,
-            birth_date,
-            gender
+        const pid = req.params.pid;
+        const product = await productsManager.getProductById(pid);
+        res.send(product);
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            error: "Ocurrio un error: " + error.message,
         });
+    }
+});
 
+router.post('/', async (req, res) => {
+    const productNew = req.body;
+    try {
+        const result = await productsManager.addProducts(productNew);
+
+        const io = req.app.get("socketio");
+        io.emit("showProducts", await productsManager.getProducts());
+        
         res.send({ status: 'success', payload: result })
     } catch (error) {
         res.status(500).send({ status: 'error', error });
+    }
+});
+
+router.put("/:pid", async (req, res) => {
+    const pid = req.params.pid;
+    const productNew = req.body;
+    try {
+        const product = await productsManager.updateProduct(pid, productNew);
+
+        const io = req.app.get("socketio");
+        io.emit("showProducts", await productsManager.getProducts());
+
+        res.send({
+            status: "success",
+            message: "Producto Actualizado Correctamente",
+            payload: product,
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            error: "Ocurrio un error: " + error.message,
+        });
+    }
+});
+
+router.delete("/:pid", async (req, res) => {
+    const { pid } = req.params.pid;
+    try {
+        const product = await productsManager.deleteProduct(pid);
+
+        const io = req.app.get("socketio");
+        io.emit("showProducts", await productsManager.getProducts());
+
+        res.send({
+            status: "success",
+            message: "Producto Eliminado Correctamente",
+            payload: product,
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            error: "Ocurrio un error: " + error.message,
+        });
     }
 });
 

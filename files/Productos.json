@@ -141,5 +141,16 @@
 		"category": "ALFAJORES",
 		"status": true,
 		"id": 14
+	},
+	{
+		"title": "ANILLOS DE FRUTILLA",
+		"description": "ANILLOS FRUTILLA BAGLEY",
+		"thumbnail": [],
+		"code": "001990",
+		"price": 315,
+		"stock": 5,
+		"category": "Galletitas",
+		"id": 15,
+		"status": true
 	}
 ]
