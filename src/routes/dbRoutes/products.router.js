@@ -28,23 +28,32 @@ router.get("/:pid", async (req, res) => {
 
 router.post('/', async (req, res) => {
     const productNew = req.body;
-    try {
-        const result = await productsManager.addProducts(productNew);
+    
+    const validProduct=productsManager.invalidProduct(productNew, "add");
+    if (!validProduct[0]){
+        res.status(400).send({ status: 'error', error: validProduct[1] });
+    } else {
+        try {
+            const result = await productsManager.addProducts(productNew);
 
-        const io = req.app.get("socketio");
-        io.emit("showProducts", await productsManager.getProducts());
-        
-        res.send({ status: 'success', payload: result })
-    } catch (error) {
-        res.status(500).send({ status: 'error', error });
+            const io = req.app.get("socketio");
+            io.emit("showProducts", await productsManager.getProducts());
+            
+            res.send({ status: 'success', payload: result })
+        } catch (error) {
+            res.status(500).send({ status: 'error', error });
+        }
     }
 });
 
 router.put("/:pid", async (req, res) => {
     const pid = req.params.pid;
-    const productNew = req.body;
+    const productUpdate = req.body;
+    
+    productsManager.invalidProduct(productUpdate, "update");
+   
     try {
-        const product = await productsManager.updateProduct(pid, productNew);
+        const product = await productsManager.updateProduct(pid, productUpdate);
 
         const io = req.app.get("socketio");
         io.emit("showProducts", await productsManager.getProducts());
@@ -63,7 +72,7 @@ router.put("/:pid", async (req, res) => {
 });
 
 router.delete("/:pid", async (req, res) => {
-    const { pid } = req.params.pid;
+    const   pid  =  req.params.pid ;
     try {
         const product = await productsManager.deleteProduct(pid);
 
