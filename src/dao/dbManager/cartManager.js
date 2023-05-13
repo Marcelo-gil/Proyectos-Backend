@@ -1,8 +1,8 @@
-import { cartModel } from '../models/cartModel.js';
+import { cartModel } from "../models/cartModel.js";
 
 export default class CartManager {
     constructor() {
-        console.log('Working Carts with DB')
+        console.log("Working Carts with DB");
     }
 
     getCarts = async () => {
@@ -38,11 +38,9 @@ export default class CartManager {
      * @returns
      */
     updateCart = async (cid, pid) => {
-        const cart = await this.getCartById(cid)
+        const cart = await this.getCartById(cid);
 
-        let product = cart.products.find(
-            (pcart) => pcart.product === pid
-        );
+        let product = cart.products.find((pcart) => pcart.product === pid);
         if (product) {
             product.quantity++;
         } else {

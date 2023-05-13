@@ -1,12 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const cartCollection = 'carrito';
+const cartCollection = "carrito";
 
 const cartSchema = new mongoose.Schema({
     products: {
         type: Array,
-        default: []
-        
+        default: [],
     },
 });
 

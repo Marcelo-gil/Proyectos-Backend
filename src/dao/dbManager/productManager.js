@@ -1,8 +1,8 @@
-import { productModel } from '../models/productModel.js';
+import { productModel } from "../models/productModel.js";
 
 export default class ProductManager {
     constructor() {
-        console.log('Working products with DB')
+        console.log("Working products with DB");
     }
 
     /**
@@ -20,78 +20,80 @@ export default class ProductManager {
                 product.stock == undefined ||
                 !product.category
             ) {
-                return [false,"Producto invalido, faltan campos"];
+                return [false, "Producto invalido, faltan campos"];
             } else {
-                return [true,"Producto valido"];
+                return [true, "Producto valido"];
             }
         }
 
-        if (product.status !== undefined && typeof product.status !== "boolean"){
-            return [false,"Status Invalido, faltan campos"];
-        }else {
-            return [true,"Producto valido"];
-        }
-            
-
-        if (product.title !== undefined && product.title.trim().length === 0){
-            return [false,"Debe Ingresar un Titulo"];
+        if (
+            product.status !== undefined &&
+            typeof product.status !== "boolean"
+        ) {
+            return [false, "Status Invalido, faltan campos"];
         } else {
-            return [true,"Producto valido"];
+            return [true, "Producto valido"];
+        }
+
+        if (product.title !== undefined && product.title.trim().length === 0) {
+            return [false, "Debe Ingresar un Titulo"];
+        } else {
+            return [true, "Producto valido"];
         }
 
         if (
             product.description !== undefined &&
             product.description.trim().length === 0
-        ){
-            return [false,"Debe Ingresar la Descripción"];
-        }else {
-            return [true,"Producto valido"];
+        ) {
+            return [false, "Debe Ingresar la Descripción"];
+        } else {
+            return [true, "Producto valido"];
         }
 
-        if (product.code !== undefined && product.code.trim().length === 0){
-            return [false,"Debe Ingresar el código"];
-        }else {
-            return [true,"Producto valido"];
+        if (product.code !== undefined && product.code.trim().length === 0) {
+            return [false, "Debe Ingresar el código"];
+        } else {
+            return [true, "Producto valido"];
         }
 
         if (
             (product.price !== undefined && isNaN(product.price)) ||
             product.price <= 0
-        ){
-            return [false,"Debe Ingresar  un Precio Valido"];
-        }else {
-            return [true,"Producto valido"];
+        ) {
+            return [false, "Debe Ingresar  un Precio Valido"];
+        } else {
+            return [true, "Producto valido"];
         }
 
         if (
             (product.stock !== undefined && isNaN(product.stock)) ||
             product.stock <= 0
-        ){
-            return [false,"El Stock debe ser mayor a Cero"];
-        }else {
-            return [true,"Producto valido"];
+        ) {
+            return [false, "El Stock debe ser mayor a Cero"];
+        } else {
+            return [true, "Producto valido"];
         }
 
         if (
             product.category !== undefined &&
             product.category.trim().length === 0
-        ){
-            return [false,"Debe Ingresar la categoria"];
-        }else {
-            return [true,"Producto valido"];
+        ) {
+            return [false, "Debe Ingresar la categoria"];
+        } else {
+            return [true, "Producto valido"];
         }
     }
 
     getProducts = async () => {
         const products = await productModel.find().lean();
         return products;
-    }
+    };
 
     /**
-         * Busca un Producto por Id
-         * @param {*} idProduct Id de Producto
-         * @returns Producto
-         */
+     * Busca un Producto por Id
+     * @param {*} idProduct Id de Producto
+     * @returns Producto
+     */
     getProductById = async (idProduct) => {
         const product = await productModel.findOne({ _id: idProduct }).lean();
         return product;
@@ -101,10 +103,10 @@ export default class ProductManager {
         if (product.status === undefined) {
             product.status = true;
         }
-        
+
         const result = await productModel.create(product);
         return result;
-    }
+    };
 
     /**
      * Actualiza un producto
@@ -114,10 +116,12 @@ export default class ProductManager {
      * @returns
      */
     updateProduct = async (idProduct, productUpdate) => {
-        
-        const result = await productModel.updateOne({ _id: idProduct }, productUpdate);
+        const result = await productModel.updateOne(
+            { _id: idProduct },
+            productUpdate
+        );
         return result;
-    }
+    };
 
     /**
      * Borra un producto de la colección
@@ -126,5 +130,5 @@ export default class ProductManager {
     deleteProduct = async (idProduct) => {
         const result = await productModel.deleteOne({ _id: idProduct });
         return result;
-    }
+    };
 }
