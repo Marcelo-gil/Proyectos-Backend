@@ -19,7 +19,7 @@ router.get("/realtimeproducts", async (req, res) => {
 });
 
 router.get("/chat", async (req, res) => {
-    res.render("chatMessages");
+    res.render("chat");
 });
 
 export default router;

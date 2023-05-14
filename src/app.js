@@ -55,15 +55,18 @@ io.on("connection", async () => {
 
 io.on("connection", (socket) => {
     console.log("Chat conectado");
-
+     
     const cargarDatos = async () => {
-        const messages = await messageManager.getMessages();
+        const messages = /*  */await messageManager.getMessages();
         socket.emit("messageLogs", messages);
     };
 
     socket.on("message", (data) => {
-        const messageEnviado = messageManager.addMessages(data);
-        cargarDatos();
+        const enviarMessage = async () => {
+            const message = await messageManager.addMessages(data);
+            cargarDatos();
+        };
+        enviarMessage();
     });
 
     socket.on("authenticated", (data) => {
