@@ -53,18 +53,24 @@ io.on("connection", async () => {
     io.emit("showProducts", await productManager.getProducts());
 });
 
+const messages = [];
+
 io.on("connection", (socket) => {
     console.log("Chat conectado");
-     
+
     const cargarDatos = async () => {
-        const messages = /*  */await messageManager.getMessages();
-        socket.emit("messageLogs", messages);
+        const historyMessages = await messageManager.getMessages();
+        historyMessages.forEach((element) => {
+            messages.push(element);
+        });
+        socket.emit("messageLogs", historyMessages);
     };
 
     socket.on("message", (data) => {
         const enviarMessage = async () => {
             const message = await messageManager.addMessages(data);
-            cargarDatos();
+            messages.push(data);
+            io.emit("messageLogs", messages);
         };
         enviarMessage();
     });

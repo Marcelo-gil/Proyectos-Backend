@@ -17,6 +17,10 @@ export default class CartManager {
      */
     getCartById = async (idCart) => {
         const cart = await cartModel.findOne({ _id: idCart }).lean();
+        if (!cart) {
+            return { status: "Error", error: "Producto no encontrado" };
+        }
+
         return cart;
     };
 

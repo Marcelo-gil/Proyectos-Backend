@@ -96,6 +96,9 @@ export default class ProductManager {
      */
     getProductById = async (idProduct) => {
         const product = await productModel.findOne({ _id: idProduct }).lean();
+        if (!product) {
+            return { status: "Error", error: "Producto no encontrado" };
+        }
         return product;
     };
 

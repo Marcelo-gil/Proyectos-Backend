@@ -7,6 +7,18 @@ const router = Router();
 const cartManager = new CartManager();
 const productManager = new ProductManager();
 
+router.get("/", async (req, res) => {
+    try {
+        const cart = await cartManager.getCarts();
+        res.send(cart);
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            error: "Ocurrio un error: " + error.message,
+        });
+    }
+});
+
 router.get("/:cid", async (req, res) => {
     try {
         const cid = req.params.cid;
@@ -62,4 +74,29 @@ router.post("/:cid/product/:pid", async (req, res) => {
         });
     }
 });
+
+router.delete("/:pid", async (req, res) => {
+    const pid = req.params.pid;
+    try {
+        const cart = await cartManager.deleteCart(pid);
+        if (cart.deletedCount === 0) {
+            res.status(400).send({
+                status: "error",
+                error: "Carrito Inexistente",
+            });
+        } else {
+            res.send({
+                status: "success",
+                message: "Carrito Eliminado Correctamente",
+                payload: cart,
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            error: "Ocurrio un error: " + error.message,
+        });
+    }
+});
+
 export default router;

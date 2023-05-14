@@ -54,15 +54,21 @@ router.put("/:pid", async (req, res) => {
 
     try {
         const product = await productsManager.updateProduct(pid, productUpdate);
+        if (product) {
+            const io = req.app.get("socketio");
+            io.emit("showProducts", await productsManager.getProducts());
 
-        const io = req.app.get("socketio");
-        io.emit("showProducts", await productsManager.getProducts());
-
-        res.send({
-            status: "success",
-            message: "Producto Actualizado Correctamente",
-            payload: product,
-        });
+            res.send({
+                status: "success",
+                message: "Producto Actualizado Correctamente",
+                payload: product,
+            });
+        } else {
+            res.status(400).send({
+                status: "error",
+                error: "Ocurrio un error: " + "Producto Inexistente",
+            });
+        }
     } catch (error) {
         res.status(400).send({
             status: "error",
@@ -75,15 +81,21 @@ router.delete("/:pid", async (req, res) => {
     const pid = req.params.pid;
     try {
         const product = await productsManager.deleteProduct(pid);
+        if (product.deletedCount === 0) {
+            res.status(400).send({
+                status: "error",
+                error: "Producto Inexistente",
+            });
+        } else {
+            const io = req.app.get("socketio");
+            io.emit("showProducts", await productsManager.getProducts());
 
-        const io = req.app.get("socketio");
-        io.emit("showProducts", await productsManager.getProducts());
-
-        res.send({
-            status: "success",
-            message: "Producto Eliminado Correctamente",
-            payload: product,
-        });
+            res.send({
+                status: "success",
+                message: "Producto Eliminado Correctamente",
+                payload: product,
+            });
+        }
     } catch (error) {
         res.status(400).send({
             status: "error",
