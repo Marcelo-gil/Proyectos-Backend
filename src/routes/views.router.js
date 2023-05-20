@@ -9,13 +9,16 @@ const productManager = new ProductManager(
 );
 
 router.get("/", async (req, res) => {
-    res.render("home", { products: await productManager.getProducts() });
-});
+    const result = await productManager.getProducts();
+    const arrayProducts=[...result.docs].map(product => (product.toJSON()));
+    console.log(arrayProducts);
+    res.render("home", {products: arrayProducts});
+    });
 
 router.get("/realtimeproducts", async (req, res) => {
-    res.render("realTimeProducts", {
-        products: await productManager.getProducts(),
-    });
+    const result = await productManager.getProducts();
+    const arrayProducts=[...result.docs];
+    res.render("realTimeProducts", {products: arrayProducts});
 });
 
 router.get("/chat", async (req, res) => {

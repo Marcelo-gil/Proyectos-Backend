@@ -5,15 +5,33 @@ const router = Router();
 const productsManager = new ProductManager();
 
 router.get("/", async (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const query = req.query.query || undefined;
+    const sort = req.query.sort || undefined;
+
     try {
-        const products = await productsManager.getProducts();
-        res.send({ status: "success", payload: products });
+        const result = await productsManager.getProducts(limit,page,query,sort);
+        console.log(result);
+        const products=[...result.docs];
+
+        res.send({ status: "success", 
+            payload: products,
+            totalPages: result.totalPages,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevLink: result.prevLink,
+            nextLink: result.nextLink
+        });
     } catch (error) {
-        res.status(500).send({ status: "error", error });
+        res.status(500).send({ status: "error", error: error.message });
     }
 });
 
 router.get("/:pid", async (req, res) => {
+    console.log(req.query)
     try {
         const pid = req.params.pid;
         const product = await productsManager.getProductById(pid);
@@ -37,7 +55,11 @@ router.post("/", async (req, res) => {
             const result = await productsManager.addProducts(productNew);
 
             const io = req.app.get("socketio");
-            io.emit("showProducts", await productsManager.getProducts());
+
+            const resultProducts = await productManager.getProducts();
+            const arrayProducts=[...resultProducts.docs];
+
+            io.emit("showProducts", arrayProducts);
 
             res.send({ status: "success", payload: result });
         } catch (error) {
@@ -56,7 +78,10 @@ router.put("/:pid", async (req, res) => {
         const product = await productsManager.updateProduct(pid, productUpdate);
         if (product) {
             const io = req.app.get("socketio");
-            io.emit("showProducts", await productsManager.getProducts());
+            const result = await productManager.getProducts();
+            const arrayProducts=[...result.docs];
+            
+            io.emit("showProducts", arrayProducts);
 
             res.send({
                 status: "success",
@@ -88,7 +113,10 @@ router.delete("/:pid", async (req, res) => {
             });
         } else {
             const io = req.app.get("socketio");
-            io.emit("showProducts", await productsManager.getProducts());
+            const result = await productManager.getProducts();
+            const arrayProducts=[...result.docs];
+
+            io.emit("showProducts", arrayProducts);
 
             res.send({
                 status: "success",

@@ -50,7 +50,11 @@ app.set("socketio", io);
 
 io.on("connection", async () => {
     console.log("Cliente Conectado");
-    io.emit("showProducts", await productManager.getProducts());
+
+    const result = await productManager.getProducts();
+    const arrayProducts=[...result.docs];
+    io.emit("showProducts", arrayProducts);
+
 });
 
 const messages = [];
