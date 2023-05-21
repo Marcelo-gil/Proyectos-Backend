@@ -1,0 +1,25 @@
+<h1 style="text-align:center">Carrito {{cart._id}}</h1>
+<section class="container">
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Code</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each cart.products}}
+                <tr>
+                    <td>{{this.product._id}}</td>
+                    <td>{{this.product.code}}</td>
+                    <td>{{this.product.description}}</td>
+                    <td>{{this.product.price}}</td>
+                    <td>{{this.quantity}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</section>

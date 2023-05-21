@@ -5,7 +5,6 @@ const form = document.getElementById("form");
 const container = document.getElementById("container");
 
 socket.on("showProducts", (data) => {
-    console.log(data);
     container.innerHTML = ``;
     data.forEach((prod) => {
         container.innerHTML += `

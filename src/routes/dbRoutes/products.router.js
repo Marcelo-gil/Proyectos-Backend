@@ -11,11 +11,16 @@ router.get("/", async (req, res) => {
     const sort = req.query.sort || undefined;
 
     try {
-        const result = await productsManager.getProducts(limit,page,query,sort);
-        console.log(result);
-        const products=[...result.docs];
+        const result = await productsManager.getProducts(
+            limit,
+            page,
+            query,
+            sort
+        );
+        const products = [...result.docs];
 
-        res.send({ status: "success", 
+        res.send({
+            status: "success",
             payload: products,
             totalPages: result.totalPages,
             prevPage: result.prevPage,
@@ -23,7 +28,7 @@ router.get("/", async (req, res) => {
             hasPrevPage: result.hasPrevPage,
             hasNextPage: result.hasNextPage,
             prevLink: result.prevLink,
-            nextLink: result.nextLink
+            nextLink: result.nextLink,
         });
     } catch (error) {
         res.status(500).send({ status: "error", error: error.message });
@@ -31,7 +36,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:pid", async (req, res) => {
-    console.log(req.query)
     try {
         const pid = req.params.pid;
         const product = await productsManager.getProductById(pid);
@@ -53,17 +57,17 @@ router.post("/", async (req, res) => {
     } else {
         try {
             const result = await productsManager.addProducts(productNew);
-
             const io = req.app.get("socketio");
-
-            const resultProducts = await productManager.getProducts();
-            const arrayProducts=[...resultProducts.docs];
-
+            const resultProducts = await productsManager.getProducts(999, 1);
+            const arrayProducts = [...resultProducts.docs];
             io.emit("showProducts", arrayProducts);
 
             res.send({ status: "success", payload: result });
         } catch (error) {
-            res.status(500).send({ status: "error", error });
+            res.status(500).send({
+                status: "error",
+                error: "Ocurrio un error: " + error.message,
+            });
         }
     }
 });
@@ -78,9 +82,9 @@ router.put("/:pid", async (req, res) => {
         const product = await productsManager.updateProduct(pid, productUpdate);
         if (product) {
             const io = req.app.get("socketio");
-            const result = await productManager.getProducts();
-            const arrayProducts=[...result.docs];
-            
+            const result = await productsManager.getProducts(999, 1);
+            const arrayProducts = [...result.docs];
+
             io.emit("showProducts", arrayProducts);
 
             res.send({
@@ -113,8 +117,8 @@ router.delete("/:pid", async (req, res) => {
             });
         } else {
             const io = req.app.get("socketio");
-            const result = await productManager.getProducts();
-            const arrayProducts=[...result.docs];
+            const result = await productsManager.getProducts(999, 1);
+            const arrayProducts = [...result.docs];
 
             io.emit("showProducts", arrayProducts);
 

@@ -84,29 +84,29 @@ export default class ProductManager {
         }
     }
 
-    getProducts = async (limit,page,query,sort) => {
-        let locQuery
-        if (!query){
-            locQuery={}
-        } else{
+    getProducts = async (limit, page, query, sort) => {
+        let locQuery;
+        if (!query) {
+            locQuery = {};
+        } else {
             const arrayQuery = query.split("=");
             locQuery = {
-                [arrayQuery[0]]: arrayQuery[1]
-            }
+                [arrayQuery[0]]: arrayQuery[1],
+            };
         }
-        const locLimit = (limit===undefined) ? 10 : limit;
-        const locPage = (page===undefined) ? 1 : page;
+        const locLimit = limit === undefined ? 10 : limit;
+        const locPage = page === undefined ? 1 : page;
         let prodSort;
-        if (sort)  {
-            prodSort= (sort==="asc") ? -1 : 1;
+        if (sort) {
+            prodSort = sort === "asc" ? -1 : 1;
         }
         const options = {
             limit: locLimit,
-            page: locPage
-        }
-        
+            page: locPage,
+        };
+
         if (sort) {
-            options.sort = { price: prodSort }
+            options.sort = { price: prodSort };
         }
         const products = await productModel.paginate(locQuery, options);
         return products;

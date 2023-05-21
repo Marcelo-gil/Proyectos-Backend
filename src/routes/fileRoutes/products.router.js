@@ -65,7 +65,7 @@ router.put("/:pid", async (req, res) => {
         const product = await productManager.updateProduct(pid, productNew);
 
         const io = req.app.get("socketio");
-        io.emit("showProducts", await productManager.getProducts());
+        io.emit("showProducts", await productManager.getProducts(999,1));
 
         res.send({
             status: "success",
@@ -86,7 +86,7 @@ router.delete("/:pid", async (req, res) => {
         const product = await productManager.deleteProduct(pid);
 
         const io = req.app.get("socketio");
-        io.emit("showProducts", await productManager.getProducts());
+        io.emit("showProducts", await productManager.getProducts(999,1));
 
         res.send({
             status: "success",
