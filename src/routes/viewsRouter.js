@@ -7,11 +7,45 @@ import CartManager from "../dao/dbManager/cartManager.js";
 const router = Router();
 
 const cartManager = new CartManager();
-const productManager = new ProductManager(
-    __dirname + "/../files/Productos.json"
-);
+const productManager = new ProductManager();
 
-router.get("/", async (req, res) => {
+const publicAccess = (req, res, next) => {
+    if(req.session.user) return res.redirect('/');
+    next();
+}
+
+const privateAccess = (req, res, next) => {
+    if(!req.session.user) return res.redirect('/login');
+    next();
+}
+
+
+router.get('/register', publicAccess, (req, res) => {
+    res.render('register');
+});
+
+router.get('/login', publicAccess, (req, res) => {
+    res.render('login');
+});
+
+router.get('/', privateAccess, async (req, res) => {
+    const { page = 1, limit = 10 } = req.query;
+    const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } =
+        await productModel.paginate({}, { limit, page, lean: true });
+
+    const products = docs;
+
+    res.render('products', {
+        user: req.session.user,
+        products,
+        hasPrevPage,
+        hasNextPage,
+        nextPage,
+        prevPage
+    });
+});
+
+router.get("/home", async (req, res) => {
     const result = await productManager.getProducts(999, 1);
     const arrayProducts = [...result.docs].map((product) => product.toJSON());
     res.render("home", { products: arrayProducts });

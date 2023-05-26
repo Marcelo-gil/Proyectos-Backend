@@ -1,4 +1,5 @@
-<h1 style="text-align:center">Productos</h1>
+<h1 style="text-align:center">Bienvenido {{user.name}}</h1>
+<h2 style="text-align:center"> Email: {{user.email}} Role: {{user.role}}</h2>
 <section class="container">
     <table class="table table-success table-striped">
         <thead>
@@ -29,13 +30,13 @@
                     <td style="text-align:center"><button id="btnAgregar" class="rounded-pill">Agregar</button></td>
                 </tr>
             {{/each}}
-            {{#if hasPrevPage}}
-                <a href="/products?page={{prevPage}}&limit=5"><button class="rounded-pill" >Anterior</button></a>
-            {{/if}}
-            {{#if hasNextPage}}
-                <a href="/products?page={{nextPage}}&limit=5"><button class="rounded-pill" >Siguiente</button></a>
-            {{/if}}
-
         </tbody>
     </table>
+    {{#if hasPrevPage}}
+        <a href="/products?page={{prevPage}}&limit=5"><button class="rounded-pill" >Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+        <a href="/products?page={{nextPage}}&limit=5"><button class="rounded-pill" >Siguiente</button></a>
+    {{/if}}
+    <a href="/api/sessions/logout"><button class="rounded-pill" >Salir</button></a>
 </section>
