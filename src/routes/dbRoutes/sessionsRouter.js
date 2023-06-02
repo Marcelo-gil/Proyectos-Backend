@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userModel from "../../dao/models/usersModel.js";
+import { createHash, isValidPassword } from '../../utils.js';
 
 const router = Router();
 
@@ -15,7 +16,7 @@ router.post('/register', async (req, res) => {
             last_name,
             email,
             age,
-            password,
+            password: createHash(password),
             role
         }
 
@@ -42,7 +43,10 @@ router.post('/login', async (req, res) => {
 
             if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
             
-            if (!(user.password === password)) return res.status(400).send({ status: 'error', error: 'Incorrect password' });
+            if(!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: 'Incorrect password' });
+            
+            delete user.password;
+
             req.session.user = {
                 name: `${user.first_name} ${user.last_name}`,
                 email: user.email,
