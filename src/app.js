@@ -11,6 +11,8 @@ import mongoose from "mongoose";
 import ProductManager from "./dao/dbManager/productManager.js";
 import MessageManager from "./dao/dbManager/messageManager.js";
 import session from 'express-session';
+import initializePassport from './config/passportConfig.js';
+import passport from 'passport';
 
 const productManager = new ProductManager();
 
@@ -35,11 +37,6 @@ app.use("/api/carts", cartsRouter);
 
 app.use(express.static(`${__dirname}/public`));
 
-app.engine("handlebars", handlebars.engine());
-app.set("views", `${__dirname}/views`);
-app.set("view engine", "handlebars");
-
-
 app.use(session({
     store: MongoStore.create({
         client: mongoose.connection.getClient(),
@@ -50,13 +47,20 @@ app.use(session({
     saveUninitialized: true
 }))
 
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.engine("handlebars", handlebars.engine());
+app.set("views", `${__dirname}/views`);
+app.set("view engine", "handlebars");
+
 app.use("/", viewsRouter);
 app.use('/api/sessions', sessionsRouter);
 
 app.use((err, req, res, next) => {
-    res.status(500).send("Error no contralado");
+    res.status(500).send("Error no controlado");
 });
-
 
 
 const server = app.listen(8080, () => console.log("Server running"));

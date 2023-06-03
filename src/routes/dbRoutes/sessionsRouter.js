@@ -1,64 +1,70 @@
 import { Router } from 'express';
 import userModel from "../../dao/models/usersModel.js";
+import passport from 'passport';
 import { createHash, isValidPassword } from '../../utils.js';
 
 const router = Router();
 
-router.post('/register', async (req, res) => {
-    try {
-        const { first_name, last_name, email, age, password } = req.body;
-        const exists = await userModel.findOne({ email });
-        const role = "usuario";
-        if (exists) return res.status(400).send({ status: 'error', error: 'User already exists' });
+router.post('/register', passport.authenticate('register', { failureRedirect: 'fail-register' }), async (req, res) => {
+    res.send({ status: 'success', message: 'User registered' })
+});
 
-        const user = {
-            first_name,
-            last_name,
-            email,
-            age,
-            password: createHash(password),
-            role
-        }
+router.get('/fail-register', async (req, res) => {
+    res.send({ status: 'error', message: 'Register failed' });
+});
 
-        await userModel.create(user);
-        res.send({ status: 'success', message: 'User registered' })
-    } catch (error) {
-        res.status(500).send({ status: 'error', error });
-    }
-})
+router.post('/login',  passport.authenticate('login', { failureRedirect: 'fail-login' }), async (req, res) => {
+    
+    if (!req.user) return res.status(400).send({ status: 'error', error: 'Invalid credentials' });
 
-router.post('/login', async (req, res) => {
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+        role: req.user.role
+    };
+
+    res.send({ status: 'success', message: 'Login success' })
+});
+
+router.get('/fail-login', async (req, res) => {
+    res.send({ status: 'error', message: 'Login failed' });
+});
+
+router.get('/github', passport.authenticate(
+    'github', { scope: ['user:email'] }
+), async (req, res) => {
+    res.send({ status: "success", message: "User registered" })
+});
+
+router.get('/github-callback', passport.authenticate(
+    'github', { failureRedirect: '/login' }
+), async (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/')
+});
+
+
+router.post('/reset', async(req, res) => {
     try {
         const { email, password } = req.body;
+        
+        if (!email || !password) return res.status(400).send({ status: 'error', error: 'Incomplete values' });
 
-        if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-             req.session.user = {
-                 name: 'adminCoder',
-                 email: 'adminCoder@coder.com',
-                 role: 'admin'
-             }
-        } else {
+        const user = await userModel.findOne({ email });
 
-            const user = await userModel.findOne({ email });
+        if (!user) return res.status(400).send({ status: 'error', error: 'User not found' });
 
-            if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
-            
-            if(!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: 'Incorrect password' });
-            
-            delete user.password;
+        user.password = createHash(password);
 
-            req.session.user = {
-                name: `${user.first_name} ${user.last_name}`,
-                email: user.email,
-                role: user.role
-            }
-            
-        }
-        res.send({ status: 'success', message: 'Login success' })
+        await userModel.updateOne({ email }, user);
+
+        res.send({ status: 'success', message: 'Password reset' })
     } catch (error) {
-        res.status(500).send({ status: 'error', error });
+        res.status(500).send({ status: 'error', error: error.message });   
     }
-});
+})
 
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
