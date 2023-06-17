@@ -10,6 +10,7 @@ import {__dirname} from "./utils.js";
 import mongoose from "mongoose";
 import ProductManager from "./dao/dbManager/productManager.js";
 import MessageManager from "./dao/dbManager/messageManager.js";
+import session from 'express-session';
 import initializePassport from './config/passportConfig.js';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
@@ -41,7 +42,15 @@ app.use(express.static(`${__dirname}/public`));
 app.use(cookieParser());
 
 initializePassport();
+
+app.use(session({
+    secret: "CoderSecrets",
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
+
+
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
@@ -49,7 +58,7 @@ app.set("view engine", "handlebars");
 
 app.use("/", viewsRouter.getRouter());
 app.use('/api/users', usersRouter.getRouter());
-//app.use('/api/sessions', sessionsRouter.getRouter());
+
 app.use('/api/sessions', sessionsRouter.getRouter());
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);

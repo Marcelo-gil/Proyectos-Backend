@@ -24,9 +24,7 @@ const initializePassport = () => {
         secretOrKey: PRIVATE_KEY
     }, async (jwt_payload, done) => {
         try {
-            // if(!jwt_payload.jkhasdfakshdf) return done(null, false, { messages: 'User not found' })
             return done(null, jwt_payload.user);
-            //req.user = {}
         } catch (error) {
             return done(error);
         }
@@ -103,7 +101,6 @@ const initializePassport = () => {
                 const result = await userModel.create(newUser);
                 done(null, result);
             } else {
-                // console.log(user);
                 done(null, user);
             }
         } catch (error) {

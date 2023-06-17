@@ -55,7 +55,8 @@ export default class UsersRouter extends Router {
             }
         })
 
-        this.get('/fail-login', ['PUBLIC'], passportStrategiesEnum.NOTHING, async (req, res) => {
+        this.get('/fail-login', ['PUBLIC'], passportStrategiesEnum.NOTHING
+        , async (req, res) => {
             res.send({ status: 'error', message: 'Login failed' });
         });
 
@@ -71,30 +72,29 @@ export default class UsersRouter extends Router {
 
             const user = req.user;
             
-            // console.log(user);
 
             const accessToken = generateToken(user);
 
             res.cookie(
                 'coderCookieToken', accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
-            ).send({ status: 'success' });
+            ).redirect('/');
 
-            //res.redirect('/')
+           
         });
 
-        this.post('/reset', async(req, res) => {
+        this.post('/reset',  ['PUBLIC'], passportStrategiesEnum.NOTHING, async(req, res) => {
             try {
                 const { email, password } = req.body;
                 
                 if (!email || !password) return res.status(400).send({ status: 'error', error: 'Incomplete values' });
         
-                const user = await userModel.findOne({ email });
+                const user = await usersManager.getByEmail(email);
         
                 if (!user) return res.status(400).send({ status: 'error', error: 'User not found' });
         
                 user.password = createHash(password);
         
-                await userModel.updateOne({ email }, user);
+                await usersManager.updateOne( email , user);
         
                 res.send({ status: 'success', message: 'Password reset' })
             } catch (error) {
@@ -114,10 +114,6 @@ export default class UsersRouter extends Router {
                 })
             }
 
-            /* req.session.destroy(err => {
-                if(err) return res.status(500).send({ status: 'error', error: 'Logout fail' });
-                res.redirect('/')
-            }) */
         });
     }
 }

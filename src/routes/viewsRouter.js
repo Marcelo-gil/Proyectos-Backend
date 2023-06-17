@@ -49,7 +49,6 @@ export default class ViewsRouter extends Router {
             const cid = req.params.cid;
             const result = await cartManager.getCartById(cid);
             const cart = result;
-            // console.log(cart);
             res.render("carts", { cart: cart });
         });
 
@@ -57,7 +56,7 @@ export default class ViewsRouter extends Router {
             const { page = 1, limit = 10 } = req.query;
             const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } =
                 await productModel.paginate({}, { limit, page, lean: true });
-
+            const user=req.user;
             const products = docs;
 
             res.render("products", {
@@ -66,6 +65,7 @@ export default class ViewsRouter extends Router {
                 hasNextPage,
                 nextPage,
                 prevPage,
+                user
             });
         });
 

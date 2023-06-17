@@ -19,4 +19,9 @@ export default class Users {
         const result = await userModel.create(user);
         return result;
     }
+
+    updateOne = async (email, user) => {
+        const result = await userModel.updateOne({ email }, user);
+        return result;
+    }
 }
