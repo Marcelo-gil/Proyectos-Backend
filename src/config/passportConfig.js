@@ -1,12 +1,36 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import userModel from '../dao/models/usersModel.js';
+import userModel from '../dao/models/userModel.js';
 import { createHash, isValidPassword } from '../utils.js';
+import { PRIVATE_KEY } from './contants.js';
+import jwt from 'passport-jwt';
 
 const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
+
+const cookieExtractor = req => {
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies['coderCookieToken'];
+    }
+    return token;
+}
 
 const initializePassport = () => {
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: PRIVATE_KEY
+    }, async (jwt_payload, done) => {
+        try {
+            // if(!jwt_payload.jkhasdfakshdf) return done(null, false, { messages: 'User not found' })
+            return done(null, jwt_payload.user);
+            //req.user = {}
+        } catch (error) {
+            return done(error);
+        }
+    }))
     passport.use('register', new LocalStrategy({
         passReqToCallback: true,
         usernameField: 'email'
@@ -25,7 +49,8 @@ const initializePassport = () => {
                 email,
                 age,
                 password: createHash(password),
-                role: 'usuario'
+                role: 'USER',
+                carts: []
             }
     
             const result = await userModel.create(userToSave);
@@ -58,7 +83,7 @@ const initializePassport = () => {
     passport.use('github', new GitHubStrategy({
         clientID: "Iv1.0f68113f0374a068",
         clientSecret: "0fc3ca5173bd6c079d69aecfb99d1ac313df5e92",
-        callbackURL: "http://localhost:8080/api/sessions/github-callback",
+        callbackURL: "http://localhost:8080/api/users/github-callback",
         scope: ['user:email']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
@@ -71,12 +96,14 @@ const initializePassport = () => {
                     age: 18,
                     email,
                     password: '' ,
-                    role: 'usuario github'
+                    role: 'USER',
+                    carts: []
                 }
 
                 const result = await userModel.create(newUser);
                 done(null, result);
             } else {
+                // console.log(user);
                 done(null, user);
             }
         } catch (error) {

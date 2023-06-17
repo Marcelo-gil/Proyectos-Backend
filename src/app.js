@@ -1,22 +1,25 @@
 import express from "express";
 import productsRouter from "./routes/dbRoutes/productsRouter.js";
 import cartsRouter from "./routes/dbRoutes/cartsRouter.js";
-import sessionsRouter from './routes/dbRoutes/sessionsRouter.js'
+import UsersRouter from "./routes/dbRoutes/usersRouter.js";
+import SessionsRouter from './routes/dbRoutes/sessionsRouter.js'
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
-import viewsRouter from "./routes/viewsRouter.js";
-import MongoStore from 'connect-mongo';
-import __dirname from "./utils.js";
+import ViewsRouter from "./routes/viewsRouter.js";
+import {__dirname} from "./utils.js";
 import mongoose from "mongoose";
 import ProductManager from "./dao/dbManager/productManager.js";
 import MessageManager from "./dao/dbManager/messageManager.js";
-import session from 'express-session';
 import initializePassport from './config/passportConfig.js';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 
 const productManager = new ProductManager();
-
 const messageManager = new MessageManager();
+
+const usersRouter = new UsersRouter();
+const sessionsRouter = new SessionsRouter();
+const viewsRouter = new ViewsRouter();
 
 const app = express();
 
@@ -32,33 +35,27 @@ try {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
+
 
 app.use(express.static(`${__dirname}/public`));
-
-app.use(session({
-    store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-        ttl: 3600
-    }),
-    secret: 'Coder39760',
-    resave: true,
-    saveUninitialized: true
-}))
+app.use(cookieParser());
 
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
-app.use("/", viewsRouter);
-app.use('/api/sessions', sessionsRouter);
+app.use("/", viewsRouter.getRouter());
+app.use('/api/users', usersRouter.getRouter());
+//app.use('/api/sessions', sessionsRouter.getRouter());
+app.use('/api/sessions', sessionsRouter.getRouter());
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
 app.use((err, req, res, next) => {
+    console.log(err);
     res.status(500).send("Error no controlado");
 });
 
