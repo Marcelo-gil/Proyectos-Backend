@@ -1,13 +1,15 @@
 import express from "express";
+import './dao/dbManager/dbConfig.js'
 import productsRouter from "./routes/dbRoutes/productsRouter.js";
 import cartsRouter from "./routes/dbRoutes/cartsRouter.js";
 import UsersRouter from "./routes/dbRoutes/usersRouter.js";
+//import usersRouter from "./routes/dbRoutes/usersRouter.js";
 import SessionsRouter from './routes/dbRoutes/sessionsRouter.js'
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import ViewsRouter from "./routes/viewsRouter.js";
 import {__dirname} from "./utils.js";
-import mongoose from "mongoose";
+//import mongoose from "mongoose";
 import ProductManager from "./dao/dbManager/productManager.js";
 import MessageManager from "./dao/dbManager/messageManager.js";
 import session from 'express-session';
@@ -24,19 +26,8 @@ const viewsRouter = new ViewsRouter();
 
 const app = express();
 
-try {
-    await mongoose.connect(
-        "mongodb+srv://marceloalgil:RRrQo5zW2vhLoHOU@cluster39760ap.e5cmjnv.mongodb.net/ecommerce?retryWrites=true&w=majority"
-    );
-    console.log("DB CONNECTED");
-} catch (error) {
-    console.log(error);
-}
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
 
 app.use(express.static(`${__dirname}/public`));
 app.use(cookieParser());
@@ -57,6 +48,8 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
 app.use("/", viewsRouter.getRouter());
+//app.use('/api/users', usersRouter.getRouter());
+//app.use('/api/users', usersRouter);
 app.use('/api/users', usersRouter.getRouter());
 
 app.use('/api/sessions', sessionsRouter.getRouter());

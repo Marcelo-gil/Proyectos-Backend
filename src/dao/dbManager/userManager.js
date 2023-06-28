@@ -11,6 +11,8 @@ export default class Users {
     }
 
     getByEmail = async (email) => {
+        console.log("user Manager");
+        console.log(email);
         const user = await userModel.findOne({ email }).lean();
         return user;
     }

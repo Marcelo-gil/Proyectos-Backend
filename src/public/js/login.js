@@ -18,9 +18,9 @@ form.addEventListener('submit', e => {
         }else{
             
             Swal.fire({
-                title: 'Atencion',
+                title: result.error,
                 icon: 'warning',
-                text: result.error
+                text: 'Atencion'
             });
         }
     }).catch (err => {
